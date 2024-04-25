@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class BranchsDataTable extends DataTable
+class BranchDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -24,11 +24,11 @@ class BranchsDataTable extends DataTable
 
         return (new EloquentDataTable($query))
             ->addColumn('action', function($row){
-                $edit = '<a href="'.route('branch.edit', ['branch' => $row->id]).'" class="btn btn-warning"><i class="fa-solid fa-pen"></i></a>';
-                $show = '<a href="'.route('branch.show', ['branch' => $row->id]).'" class="btn btn-info"><i class="fa-solid fa-magnifying-glass"></i></a>';
+                $edit = '<a href="'.route('branch.edit', ['branch' => $row->id]).'" class="btn btn-warning" data-toggle="tooltip" title="Edit" ><i class="fa-solid fa-pen"></i></a>';
+                $show = '<a href="'.route('branch.show', ['branch' => $row->id]).'" class="btn btn-info" data-toggle="tooltip" title="Inspect" ><i class="fa-solid fa-magnifying-glass"></i></a>';
 
                 $delete = '<a href="" data-name="' . $row->name .'" data-remote="' . route('branch.destroy', $row->id) . '"
-                class="btn btn-danger btn-delete" data-toggle="tooltip" title="' . __('messages.index.delete') . '">
+                class="btn btn-danger btn-delete" data-toggle="tooltip" title="Delete">
                 <i class="fa fa-trash"></i>
                 </a>';
 
@@ -92,27 +92,4 @@ class BranchsDataTable extends DataTable
         return 'Branchs_' . date('YmdHis');
     }
 
-    /**
-     * Create new data
-     */
-    protected function add()
-    {
-        return redirect()->route('branch.create');
-    }
-
-    /**
-     * Create new data
-     */
-    protected function edit($id)
-    {
-        return redirect()->route('branch.create');
-    }
-
-    /**
-     * Create new data
-     */
-    protected function delete($id)
-    {
-        return redirect()->route('branch.create');
-    }
 }
