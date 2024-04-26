@@ -7,12 +7,16 @@
     "require": {
         "php": "^8.2",
         "almasaeed2010/adminlte": "~3.2",
+        "barryvdh/laravel-snappy": "^1.0",
+        "h4cc/wkhtmltoimage-amd64": "0.12.x",
+        "h4cc/wkhtmltopdf-amd64": "0.12.x",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
         "maatwebsite/excel": "^3.1",
         "spatie/laravel-permission": "^6.7",
         "yajra/laravel-datatables": "^11.0",
-        "yajra/laravel-datatables-buttons": "^11.0"
+        "yajra/laravel-datatables-buttons": "^11.0",
+        "yajra/laravel-datatables-export": "^11.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
