@@ -86,6 +86,6 @@ return [
         /*
          * Default DOM to generate when not set.
          */
-        'dom' => 'Bfrtip',
+        'dom' => '<"row"<"col-6"B><"col-6 d-flex flex-row-reverse"fr>>t<"row"<"col-6"i><"col-6 d-flex flex-row-reverse"p>>',
     ],
 ];
