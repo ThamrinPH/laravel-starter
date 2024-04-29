@@ -10,5 +10,5 @@ class RoleController extends MainController
     public $objName = 'Role';
     public $routeName = 'role';
     public $view = 'pages.role';
-    public $datatableName = 'App\DataTables\RolesDataTable';
+    public $datatableName = 'App\DataTables\RoleDataTable';
 }

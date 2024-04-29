@@ -2,7 +2,10 @@
 
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\MenuController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +40,41 @@ Route::middleware('auth')->group(function () {
         Route::put('/{branch}', 'update')->name('update')->middleware('permission:branch-update');
         Route::delete('/{branch}', 'destroy')->name('destroy')->middleware('permission:branch-delete');
         Route::get('/{branch}/edit', 'edit')->name('edit')->middleware('permission:branch-update');
+    });
+
+    Route::controller(MenuController::class)->name('menu.')->prefix('menu')->group(function () {
+        Route::get('/', 'index')->name('index')->middleware('permission:menu-view');
+        Route::get('/select2', 'select2')->name('select2')->middleware('permission:menu-view');
+        Route::post('/', 'store')->name('store')->middleware('permission:menu-create');
+        Route::get('/create', 'create')->name('create')->middleware('permission:menu-create');
+        Route::get('/{menu}', 'show')->name('show')->middleware('permission:menu-view');
+        Route::put('/{menu}', 'update')->name('update')->middleware('permission:menu-update');
+        Route::delete('/{menu}', 'destroy')->name('destroy')->middleware('permission:menu-delete');
+        Route::get('/{menu}/edit', 'edit')->name('edit')->middleware('permission:menu-update');
+    });
+
+    Route::prefix('access')->group(function() {
+        Route::controller(RoleController::class)->name('role.')->prefix('role')->group(function () {
+            Route::get('/', 'index')->name('index')->middleware('permission:role-view');
+            // Route::get('/select2', 'select2')->name('select2')->middleware('permission:role-view');
+            Route::post('/', 'store')->name('store')->middleware('permission:role-create');
+            Route::get('/create', 'create')->name('create')->middleware('permission:role-create');
+            Route::get('/{role}', 'show')->name('show')->middleware('permission:role-view');
+            Route::put('/{role}', 'update')->name('update')->middleware('permission:role-update');
+            Route::delete('/{role}', 'destroy')->name('destroy')->middleware('permission:role-delete');
+            Route::get('/{role}/edit', 'edit')->name('edit')->middleware('permission:role-update');
+        });
+    
+        Route::controller(PermissionController::class)->name('permission.')->prefix('permission')->group(function () {
+            Route::get('/', 'index')->name('index')->middleware('permission:permission-view');
+            // Route::get('/select2', 'select2')->name('select2')->middleware('permission:permission-view');
+            Route::post('/', 'store')->name('store')->middleware('permission:permission-create');
+            Route::get('/create', 'create')->name('create')->middleware('permission:permission-create');
+            Route::get('/{permission}', 'show')->name('show')->middleware('permission:permission-view');
+            Route::put('/{permission}', 'update')->name('update')->middleware('permission:permission-update');
+            Route::delete('/{permission}', 'destroy')->name('destroy')->middleware('permission:permission-delete');
+            Route::get('/{permission}/edit', 'edit')->name('edit')->middleware('permission:permission-update');
+        });
     });
 });
 
