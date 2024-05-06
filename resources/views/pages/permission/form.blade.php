@@ -4,13 +4,13 @@
     </x-slot>
 
     <x-slot name="titleHeader">
-        Permission - Create
+        Permission - {{ ucwords($type) }}
     </x-slot>
 
     <div class="d-flex justify-content-center">
         <div class="card card-primary col-6">
             <div class="card-header">
-                <h3 class="card-title">Permission Form</h3>
+                <h3 class="card-title">{{ ucwords($type) }} Permission Form</h3>
             </div>
     
             <div class="card-body">

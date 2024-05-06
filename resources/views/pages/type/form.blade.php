@@ -10,7 +10,7 @@
     <div class="d-flex justify-content-center">
         <div class="col card card-primary">
             <div class="card-header">
-                <h3 class="card-title">Type Form</h3>
+                <h3 class="card-title">{{ ucwords($type) }} Type Form</h3>
             </div>
 
             <div class="card-body">

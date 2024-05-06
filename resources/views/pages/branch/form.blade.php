@@ -4,13 +4,13 @@
     </x-slot>
 
     <x-slot name="titleHeader">
-        Branchs - Create
+        Branchs - {{ ucwords($type) }}
     </x-slot>
 
     <div class="d-flex justify-content-center">
         <div class="card card-primary col-6">
             <div class="card-header">
-                <h3 class="card-title">Branch Form</h3>
+                <h3 class="card-title">>{{ ucwords($type) }} Branch Form</h3>
             </div>
     
             <div class="card-body">
@@ -28,7 +28,7 @@
                         </div>
                         <div class="col-12 form-group">
                             <label for="branch_id">Parent</label>
-                            <select id="select-branch" class="col-12" name="branch_id"></select>
+                            <x-select2 name="branch_id" :valueId="$obj->parent->id ?? ''" :valueText="$obj->parent->name ?? ''" route="{{ route('branch.select2') }}" placeholder="Select a branch..."></x-select2>
                             <x-input-error :messages="$errors->get('branch_id')" class="mt-2" />
                         </div>
                     </div>
@@ -44,35 +44,4 @@
             </div>
         </div>
     </div>
-
-    @push('footer-js')
-    <script>
-        var select2Dom = $('#select-branch');
-        var select2Route = "{{ route('branch.select2') }}";
-        select2Dom.select2({
-            theme: 'bootstrap',
-            ajax: {
-                url: select2Route,
-                data: function (params) {
-                var query = {
-                    search: params.term,
-                    type: 'public'
-                }
-
-                // Query parameters will be ?search=[term]&type=public
-                return query;
-                }
-            }
-        });
-    </script>
-
-    @if( !empty($obj->parent) )
-        <script>
-            var select2id = '{{ $obj->parent->id }}'
-            var select2text = '{{ $obj->parent->name }}'
-            var newOption = new Option(select2text, select2id, true, true);
-            select2Dom.append(newOption).trigger('change');
-        </script>
-    @endif
-    @endpush
 </x-app-layout>
