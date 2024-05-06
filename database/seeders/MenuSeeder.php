@@ -86,5 +86,17 @@ class MenuSeeder extends Seeder
             'status' => 1
         ]);
 
+        Menu::create([
+            'name' => 'category',
+            'route' => 'category.index',
+            'routeBase' => 'category.*',
+            'path' => route('category.index'),
+            'pathBase' => 'category/*',
+            'icon' => 'fa-solid fa-list',
+            'role' => 'super-admin',
+            'permission' => 'category-view',
+            'status' => 1
+        ]);
+
     }
 }
