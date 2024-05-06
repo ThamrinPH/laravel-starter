@@ -18,53 +18,47 @@
 
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                @foreach($menus as $menuRow)
-
+                @foreach($menus as $menuKey => $menuRow)
+                    @if( $menuRow->childs->count() > 0 )
+                    <li @class([
+                        'nav-item', 
+                        'menu-is-opening menu-open active' => request()->is($menuRow->pathBase.'/*'),
+                        ])>
+                        <a href="#" @class(['nav-link', 'active' => request()->is($menuRow->pathBase.'/*') || request()->routeIs($menuRow->routeBase) ])>
+                            <i class="{{ $menuRow->icon ?? '' }}"></i>
+                            <p>
+                                {{ ucwords($menuRow->name) }} 
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @foreach($menuRow->childs as $childRow)
+                            <li class="nav-item">
+                                <a href="{{ empty($childRow->route) ? '#' : route($childRow->route)}}" @class([ 'nav-link' , 'active'=> request()->is($childRow->pathBase.'/*') || request()->routeIs($childRow->routeBase)
+                                    ])>
+                                    <i class="{{ $childRow->icon ?? '' }}"></i>
+                                    <p>
+                                        {{ ucwords($childRow->name) }}
+                                    </p>
+                                </a>
+                            </li>
+                            @endforeach
+                        </ul>
+                    </li>
+                    @elseif( empty($menuRow->menu_id) )
+                        @can($menuRow->permission)
+                        <li class="nav-item">
+                            <a href="{{ empty($menuRow->route) ? '#' : route($menuRow->route)}}" @class([ 'nav-link' , 'active'=> request()->is($menuRow->pathBase.'/*') || request()->routeIs($menuRow->routeBase)
+                                ])>
+                                <i class="{{ $menuRow->icon ?? '' }}"></i>
+                                <p>
+                                    {{ ucwords($menuRow->name) }}
+                                </p>
+                            </a>
+                        </li>
+                        @endcan
+                    @endif
                 @endforeach
-
-                @hasrole('super-admin')
-                <li class="nav-item">
-                    <a href="{{ route('branch.index') }}" 
-                        @class([
-                            'nav-link', 
-                            'active' => request()->is('branch/*') || request()->routeIs('branch.*')
-                            ])>
-                        <i class="fa-solid fa-building-flag"></i>
-                        <p>
-                            {{ ucwords('branch') }}
-                        </p>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="{{ route('branch.index') }}" class="nav-link">
-                        <i class="fa-solid fa-building-flag"></i>
-                        <p>
-                            Menu
-                        </p>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="{{ route('branch.index') }}" class="nav-link">
-                        <i class="fa-solid fa-building-flag"></i>
-                        <p>
-                            Role
-                        </p>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="{{ route('branch.index') }}" class="nav-link">
-                        <i class="fa-solid fa-building-flag"></i>
-                        <p>
-                            Permission
-                        </p>
-                    </a>
-                </li>
-                @endhasrole
-
-                
             </ul>
         </nav>
 
