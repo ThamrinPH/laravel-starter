@@ -29,10 +29,12 @@ class MainController extends Controller
      */
     public function index()
     {
+    
         if( !empty($this->datatableName) ) {
 
             /** Returning Json/File Excel */
             $res = $this->datatable();
+            
 
             return $res;
         }
@@ -55,18 +57,24 @@ class MainController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         DB::beginTransaction();
         $obj = new $this->model;
         
         $validations = $obj->getValidations();
 
-        $req = $obj->setDefaultValues($request->all());
+        $filteredRequest = $this->prepRequest($request->all());
+
+        $req = $obj->setDefaultValues($filteredRequest);
 
         $validator = Validator::make($req, $validations);
 
         if ($validator->fails()) {
+            if($request->ajax()) {
+                return response()->json(['statusCode' => 500, 'statusMessage' => 'failed', 'errors' => $validator->errors()]);
+            }
+
             return redirect()
                         ->back()
                         ->with('errors', $validator->errors())
@@ -82,11 +90,26 @@ class MainController extends Controller
         if( !empty($res->id) ) {
             DB::commit();
 
+            if($request->ajax()) 
+            {
+                return response()->json([
+                    'statusCode' => 200, 
+                    'statusMessage' => 'Success', 
+                    'success' => ucwords($this->objName).' succesfully created', 
+                    'redirectTo' => route($this->routeName.'.index'),
+                    'data' => $res
+                ]);                
+            }
+
             return redirect()
                 ->route($this->routeName.'.index')
-                ->with('success', ucwords($this->objName).' succesfully created');
+                ->with(['success', ucwords($this->objName).' succesfully created', 'data'=> $res]);
         }else{
             DB::rollBack();
+
+            if($request->ajax()) {
+                return response()->json(['statusCode' => 500, 'statusMessage' => 'failed', 'errors' => $validator->errors()]);
+            }
 
             return redirect()
                 ->back()
@@ -136,9 +159,17 @@ class MainController extends Controller
         
         $validations = $obj->getValidations();
         
-        $validator = Validator::make($request->all(), $validations);
+        $filteredRequest = $this->prepRequest($request->all());
+
+        $req = $obj->setDefaultValues($filteredRequest);
+
+        $validator = Validator::make($req, $validations);
 
         if ($validator->fails()) {
+            if($request->ajax()) {
+                return response()->json(['messages', $validator->errors()]);
+            }
+
             return redirect()
                         ->back()
                         ->with('errors', $validator->errors())
@@ -154,11 +185,29 @@ class MainController extends Controller
         if($res > 0) {
             DB::commit();
 
+            if($request->ajax()) {
+                return response()->json(
+                    [
+                        'statusCode' => 200, 
+                        'statusMessage' => 'Success', 
+                        'success' => ucwords($this->objName).' succesfully updated', 
+                        'redirectTo' => route($this->routeName.'.index'),
+                        'data'=> $this->model::where('id', $id)->first()
+                    ]);
+            }
+
             return redirect()
                 ->route($this->routeName.'.index')
-                ->with('success', ucwords($this->objName).' succesfully updated');
+                ->with([
+                    'success'=> ucwords($this->objName).' succesfully updated',
+                    'data'=> $this->model::where('id', $id)->first()
+                ]);
         }else{
             DB::rollBack();
+
+            if($request->ajax()) {
+                return response()->json(['statusCode' => 500, 'statusMessage' => 'failed', 'errors' => $validator->errors()]);
+            }
 
             return redirect()
                 ->back()
@@ -198,6 +247,21 @@ class MainController extends Controller
         $dataTable = new $this->datatableName;
 
         return $dataTable->render($this->view.'.index');
+    }
+
+    public function prepRequest($request)
+    {
+        $obj = new $this->model;
+        $fillables = $obj->getFillables();
+
+        $inputs = [];
+
+        foreach($request as $requestRow)
+        {
+            if( in_array($requestRow['name'], $fillables)) $inputs[$requestRow['name']] = $requestRow['value'];
+        }
+
+        return $inputs ?? $request;
     }
 
 }
