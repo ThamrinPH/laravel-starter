@@ -6,6 +6,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TypeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -75,6 +76,18 @@ Route::middleware('auth')->group(function () {
             Route::delete('/{permission}', 'destroy')->name('destroy')->middleware('permission:permission-delete');
             Route::get('/{permission}/edit', 'edit')->name('edit')->middleware('permission:permission-update');
         });
+
+    });
+    
+    Route::controller(TypeController::class)->name('type.')->prefix('type')->group(function () {
+        Route::get('/', 'index')->name('index')->middleware('permission:type-view');
+        Route::get('/select2', 'select2')->name('select2')->middleware('permission:type-view');
+        Route::post('/', 'store')->name('store')->middleware('permission:type-create');
+        Route::get('/create', 'create')->name('create')->middleware('permission:type-create');
+        Route::get('/{type}', 'show')->name('show')->middleware('permission:type-view');
+        Route::put('/{type}', 'update')->name('update')->middleware('permission:type-update');
+        Route::delete('/{type}', 'destroy')->name('destroy')->middleware('permission:type-delete');
+        Route::get('/{type}/edit', 'edit')->name('edit')->middleware('permission:type-update');
     });
 });
 
