@@ -36,6 +36,18 @@ class MenuSeeder extends Seeder
             'status' => 1
         ]);
 
+        $accessGroup = Menu::create([
+            'name' => 'access',
+            'route' => '',
+            'routeBase' => 'access.*',
+            'path' => '',
+            'pathBase' => 'access/*',
+            'icon' => '',
+            'role' => 'super-admin',
+            'permission' => 'role-view',
+            'status' => 1
+        ]);
+        
         Menu::create([
             'name' => 'role',
             'route' => 'role.index',
@@ -45,6 +57,7 @@ class MenuSeeder extends Seeder
             'icon' => 'fa-solid fa-users-gear',
             'role' => 'super-admin',
             'permission' => 'role-view',
+            'menu_id' => $accessGroup->id,
             'status' => 1
         ]);
 
@@ -57,7 +70,21 @@ class MenuSeeder extends Seeder
             'icon' => 'fa-solid fa-address-card',
             'role' => 'super-admin',
             'permission' => 'permission-view',
+            'menu_id' => $accessGroup->id,
             'status' => 1
         ]);
+
+        Menu::create([
+            'name' => 'type',
+            'route' => 'type.index',
+            'routeBase' => 'type.*',
+            'path' => route('type.index'),
+            'pathBase' => 'type/*',
+            'icon' => 'fa-solid fa-gear',
+            'role' => 'super-admin',
+            'permission' => 'type-view',
+            'status' => 1
+        ]);
+
     }
 }

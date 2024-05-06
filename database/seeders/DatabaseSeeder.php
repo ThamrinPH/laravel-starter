@@ -20,10 +20,10 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             RoleSeeder::class,
             RolePermissionSeeder::class,
-            UserSeeder::class,
             MenuSeeder::class,
             TypeSeeder::class,
             CategorySeeder::class,
+            UserSeeder::class,
         ]);
     }
 }

@@ -31,5 +31,9 @@ class UserSeeder extends Seeder
             'password' => Hash::make('admin-password'),
             'remember_token' => Str::random(10),
         ]);
+
+        $role = Role::findByName('super-admin');
+
+        if( !empty($role) ) $su->assignRole($role);
     }
 }

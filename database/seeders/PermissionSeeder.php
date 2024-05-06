@@ -52,5 +52,10 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'bank account-create']);  
         Permission::create(['name' => 'bank account-update']);
         Permission::create(['name' => 'bank account-delete']);
+
+        Permission::create(['name' => 'unit-view']);
+        Permission::create(['name' => 'unit-create']);  
+        Permission::create(['name' => 'unit-update']);
+        Permission::create(['name' => 'unit-delete']);
     }
 }
