@@ -89,6 +89,17 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{type}', 'destroy')->name('destroy')->middleware('permission:type-delete');
         Route::get('/{type}/edit', 'edit')->name('edit')->middleware('permission:type-update');
     });
+
+    Route::controller(App\Http\Controllers\CategoryController::class)->name('category.')->prefix('category')->group(function () {
+        Route::get('/', 'index')->name('index')->middleware('permission:category-view');
+        Route::get('/select2', 'select2')->name('select2')->middleware('permission:category-view');
+        Route::post('/', 'store')->name('store')->middleware('permission:category-create');
+        Route::get('/create', 'create')->name('create')->middleware('permission:category-create');
+        Route::get('/{category}', 'show')->name('show')->middleware('permission:category-view');
+        Route::put('/{category}', 'update')->name('update')->middleware('permission:category-update');
+        Route::delete('/{category}', 'destroy')->name('destroy')->middleware('permission:category-delete');
+        Route::get('/{category}/edit', 'edit')->name('edit')->middleware('permission:category-update');
+    });
 });
 
 Route::get('/sidebar', function () {
