@@ -16,7 +16,12 @@ class MainModel extends Model
 
     public function getValidations()
     {
-        return $this->validations;
+        return $this->validations ?? [];
+    }
+
+    public function getFillables()
+    {
+        return $this->fillable ?? [];
     }
 
     public function setDefaultValues($request = []): Array
